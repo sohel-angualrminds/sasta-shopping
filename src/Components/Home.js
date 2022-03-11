@@ -251,7 +251,7 @@ const Home = () => {
               <li className={`page-item ${currentPage === pages.length ? 'disabled' : ''}`}
               >
                 <span className="page-link"
-                  disabled={Number(currentPage) === Number(pages[pages.length]) ? true : false}
+                  disabled={Number(currentPage) === Number(pages[pages.length])-1 ? true : false}
                   onClick={(e) => handleNext(e, Number(currentPage) === Number(pages[pages.length]) ? true : false)}
                 >
                   Next
