@@ -70,7 +70,7 @@ const Home = () => {
     let i = 0;
     let arr = [];
     res = sorting(res, sort);
-    console.log(res);
+    // console.log(res);
     while (i < res.length) {
       const na = res.slice(i, i + 4);
       let e = na.map(({ _id, image, name, price }, index) => {
@@ -126,7 +126,7 @@ const Home = () => {
 
   let currentItem = apiData.slice(indexOfFirstItem, indexOfLastItem);
 
-  // console.log(currentItem);
+  console.log(currentItem);
 
   const handlePagination = (e) => {
     setCurrentPage(Number(e.target.id))
@@ -170,11 +170,8 @@ const Home = () => {
   }
 
   const handleNext = (p1, page2) => {
-    if (p1 >= page2) {
-      console.log(p1);
-      console.log(page2);
+    if (p1 >= page2)
       return;
-    }
 
     setCurrentPage(currentPage + 1);
     if (currentPage + 1 > maxPageLimit) {
@@ -228,9 +225,6 @@ const Home = () => {
         </div>
       </div>
       <>
-        {/* {showProducts}
-         */}
-
         {setShowData(currentItem)}
       </>
       <div className="row">
