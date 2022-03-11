@@ -99,7 +99,6 @@ const Home = () => {
     setSort(e.target.value);
     let arr = [...apiData];
     currentItem = sorting(arr, e.target.value);
-    // setShowData(res)
   }
 
 
@@ -108,7 +107,7 @@ const Home = () => {
   ///////////////////////////////////////////////////////////
   //-- pagination start
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemPerPage, setItemPerPage] = useState(5)
+  const [itemPerPage, setItemPerPage] = useState(5);
 
   // eslint-disable-next-line no-unused-vars
   const [pageNumberLimit, setPageNumberLimit] = useState(apiData.length % itemPerPage);
@@ -156,10 +155,12 @@ const Home = () => {
     }
   })
 
-  const handlePrev = (e, con) => {
-    if (con)
+  const handlePrev = (p1, p2) => {
+
+    if (p1 <= p2)
       return;
-    
+
+
     setCurrentPage(currentPage - 1);
 
     if ((currentPage - 1) % pageNumberLimit === 0) {
@@ -168,10 +169,12 @@ const Home = () => {
     }
   }
 
-  const handleNext = (e, con) => {
-    console.log(!con);
-    if (con)
+  const handleNext = (p1, page2) => {
+    if (p1 >= page2) {
+      console.log(p1);
+      console.log(page2);
       return;
+    }
 
     setCurrentPage(currentPage + 1);
     if (currentPage + 1 > maxPageLimit) {
@@ -238,7 +241,7 @@ const Home = () => {
                 className={`page-item ${currentPage === pages[0] ? 'disabled' : ''}`}                      >
                 <span className="page-link"
                   disabled={currentPage === pages[0] ? true : false}
-                  onClick={handlePrev}
+                  onClick={() => handlePrev(currentPage, pages[0])}
                 >
                   Previous
                 </span>
@@ -251,8 +254,8 @@ const Home = () => {
               <li className={`page-item ${currentPage === pages.length ? 'disabled' : ''}`}
               >
                 <span className="page-link"
-                  disabled={Number(currentPage) === Number(pages[pages.length])-1 ? true : false}
-                  onClick={(e) => handleNext(e, Number(currentPage) === Number(pages[pages.length]) ? true : false)}
+                  disabled={Number(currentPage) <= Number(pages[pages.length]) - 1 ? true : false}
+                  onClick={() => handleNext(currentPage, pages[pages.length - 1])}
                 >
                   Next
                 </span>
@@ -268,6 +271,7 @@ const Home = () => {
               className="form-select-sm"
               onChange={(e) => {
                 setItemPerPage(Number(e.target.value))
+                setCurrentPage(1);
               }}
               defaultValue={itemPerPage}>
               <option value="05">05</option>
