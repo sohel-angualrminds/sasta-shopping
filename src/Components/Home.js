@@ -156,7 +156,10 @@ const Home = () => {
     }
   })
 
-  const handlePrev = () => {
+  const handlePrev = (e, con) => {
+    if (con)
+      return;
+    
     setCurrentPage(currentPage - 1);
 
     if ((currentPage - 1) % pageNumberLimit === 0) {
@@ -165,32 +168,37 @@ const Home = () => {
     }
   }
 
-  const handleNext = () => {
+  const handleNext = (e, con) => {
+    console.log(!con);
+    if (con)
+      return;
+
     setCurrentPage(currentPage + 1);
     if (currentPage + 1 > maxPageLimit) {
       setMaxPageLimit(maxPageLimit + pageNumberLimit);
       setMinPageLimit(minPageLimit + pageNumberLimit);
     }
+
   }
   //---/pagination End
   ///////////////////////////////////////////////////////////
 
   /*end Paggination Logic */
 
+  const get = async () => {
+    const res = await getData();
+    setShowData(res.products)
+    setApiData(res.products);
+    setApiDataBackup(res.products)
+  }
   //for loading api
   useEffect(() => {
-    const get = async () => {
-      const res = await getData();
-      setShowData(res.products)
-      setApiData(res.products);
-      setApiDataBackup(res.products)
-    }
     get()
   }, [])
 
   useEffect(() => {
-    setShowData(currentItem);
-  }, [currentItem,itemPerPage])
+    get()
+  }, [itemPerPage])
 
 
 
@@ -244,7 +252,7 @@ const Home = () => {
               >
                 <span className="page-link"
                   disabled={Number(currentPage) === Number(pages[pages.length]) ? true : false}
-                  onClick={handleNext}
+                  onClick={(e) => handleNext(e, Number(currentPage) === Number(pages[pages.length]) ? true : false)}
                 >
                   Next
                 </span>
@@ -259,13 +267,12 @@ const Home = () => {
             <select
               className="form-select-sm"
               onChange={(e) => {
-                currentItem=apiData.slice(indexOfFirstItem, indexOfLastItem);
                 setItemPerPage(Number(e.target.value))
               }}
               defaultValue={itemPerPage}>
               <option value="05">05</option>
               <option value="10">10</option>
-              <option value="20">25</option>
+              <option value="25">25</option>
               <option value="100">50</option>
             </select>
           </div>
